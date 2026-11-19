@@ -1,0 +1,470 @@
+import { Subject, Question, PastPaper, StudyPlanSession, StudentProfile } from '../types';
+
+export const SAMPLE_PROFILE: StudentProfile = {
+  id: 'student_1123208002',
+  name: 'Adhil Ihsan',
+  email: 'adhil.ihsan@student.edu',
+  grade: 'Class 12 / Higher Secondary (CSE/Science)',
+  board: 'Central Board (CBSE) / Higher Secondary',
+  targetExamDate: new Date(Date.now() + 35 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 35 days from now
+  dailyStudyMinutes: 75,
+  preferredDifficulty: 'medium',
+  currentSubjectId: 'sub_physics_12',
+  streakDays: 4,
+  totalStudyMinutes: 480,
+  joinedDate: '2026-10-15',
+  bookmarkedQuestionIds: ['q_phy_003', 'q_phy_006'],
+};
+
+export const INITIAL_SUBJECTS: Subject[] = [
+  {
+    id: 'sub_physics_12',
+    name: 'Physics (Class 12 / Higher Secondary)',
+    code: 'PHY-12',
+    board: 'CBSE & National Boards',
+    grade: 'Grade 12',
+    targetExamDate: new Date(Date.now() + 35 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    dailyStudyMinutes: 75,
+    preferredDifficulty: 'medium',
+    topics: [
+      {
+        id: 'top_elec_stat',
+        subjectId: 'sub_physics_12',
+        name: 'Electrostatics & Potential',
+        description: 'Coulomb’s law, electric field lines, Gauss’s law applications, potential difference, and capacitors.',
+        estimatedWeightagePercentage: 18,
+        subtopics: ["Coulomb's Law", "Gauss Theorem", "Equipotential Surfaces", "Parallel Plate Capacitors", "Dielectrics"],
+        difficultyTrend: 'medium',
+        masteryLevel: 68,
+        totalPracticed: 24,
+        totalCorrect: 17,
+      },
+      {
+        id: 'top_curr_elec',
+        subjectId: 'sub_physics_12',
+        name: 'Current Electricity & Circuits',
+        description: 'Ohm’s law, drift velocity, Kirchhoff’s rules, Wheatstone bridge, and potentiometer.',
+        estimatedWeightagePercentage: 16,
+        subtopics: ["Drift Velocity", "Kirchhoff's Laws", "Wheatstone Bridge", "Internal Resistance of Cells", "Meter Bridge"],
+        difficultyTrend: 'medium',
+        masteryLevel: 74,
+        totalPracticed: 20,
+        totalCorrect: 15,
+      },
+      {
+        id: 'top_mag_eff',
+        subjectId: 'sub_physics_12',
+        name: 'Magnetic Effects of Current & Magnetism',
+        description: 'Biot-Savart law, Ampere’s circuital law, solenoid, moving coil galvanometer, and magnetic dipole.',
+        estimatedWeightagePercentage: 16,
+        subtopics: ["Biot-Savart Law", "Ampere's Law", "Galvanometer to Ammeter/Voltmeter", "Torque on Current Loop"],
+        difficultyTrend: 'hard',
+        masteryLevel: 52,
+        totalPracticed: 16,
+        totalCorrect: 8,
+      },
+      {
+        id: 'top_emi_ac',
+        subjectId: 'sub_physics_12',
+        name: 'Electromagnetic Induction & Alternating Currents',
+        description: 'Faraday’s law, Lenz’s law, self and mutual inductance, AC generator, LCR series circuit, and transformers.',
+        estimatedWeightagePercentage: 14,
+        subtopics: ["Faraday & Lenz Laws", "Inductance", "LCR Series Resonance", "Transformers & Power Loss"],
+        difficultyTrend: 'hard',
+        masteryLevel: 45,
+        totalPracticed: 14,
+        totalCorrect: 6,
+      },
+      {
+        id: 'top_optics',
+        subjectId: 'sub_physics_12',
+        name: 'Optics (Ray & Wave Optics)',
+        description: 'Total internal reflection, lens maker’s formula, telescope, microscope, Huygens’ principle, and Young’s double slit experiment.',
+        estimatedWeightagePercentage: 20,
+        subtopics: ["Lens Maker Formula", "Refraction via Prism", "Astronomical Telescope", "YDSE Interference", "Diffraction"],
+        difficultyTrend: 'medium',
+        masteryLevel: 60,
+        totalPracticed: 28,
+        totalCorrect: 17,
+      },
+      {
+        id: 'top_modern_phy',
+        subjectId: 'sub_physics_12',
+        name: 'Modern Physics & Semiconductors',
+        description: 'Photoelectric effect, Bohr’s atomic model, nuclear binding energy, p-n junction diode, and rectifiers.',
+        estimatedWeightagePercentage: 16,
+        subtopics: ["Einstein Photoelectric Equation", "Bohr Hydrogen Radius", "p-n Junction Diode", "Half & Full Wave Rectifiers"],
+        difficultyTrend: 'easy',
+        masteryLevel: 82,
+        totalPracticed: 18,
+        totalCorrect: 15,
+      },
+    ],
+  },
+  {
+    id: 'sub_math_12',
+    name: 'Mathematics (Calculus & Vectors)',
+    code: 'MATH-12',
+    board: 'College Board / Standardized',
+    grade: 'Grade 12',
+    targetExamDate: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    dailyStudyMinutes: 60,
+    preferredDifficulty: 'hard',
+    topics: [
+      {
+        id: 'top_calc_diff',
+        subjectId: 'sub_math_12',
+        name: 'Differential Calculus & Applications',
+        description: 'Continuity, differentiability, chain rule, tangents/normals, maxima and minima.',
+        estimatedWeightagePercentage: 30,
+        subtopics: ["Logarithmic Differentiation", "Maxima and Minima", "Rate of Change", "Mean Value Theorems"],
+        difficultyTrend: 'hard',
+        masteryLevel: 65,
+        totalPracticed: 22,
+        totalCorrect: 14,
+      },
+      {
+        id: 'top_calc_int',
+        subjectId: 'sub_math_12',
+        name: 'Integral Calculus & Differential Equations',
+        description: 'Indefinite and definite integrals, area under curves, first-order differential equations.',
+        estimatedWeightagePercentage: 32,
+        subtopics: ["Integration by Parts", "Definite Integral Properties", "Area Bounded by Curves", "Linear Differential Equations"],
+        difficultyTrend: 'hard',
+        masteryLevel: 58,
+        totalPracticed: 20,
+        totalCorrect: 11,
+      },
+      {
+        id: 'top_vec_3d',
+        subjectId: 'sub_math_12',
+        name: 'Vectors & 3D Geometry',
+        description: 'Scalar and vector products, direction cosines, shortest distance between skew lines.',
+        estimatedWeightagePercentage: 22,
+        subtopics: ["Dot & Cross Product", "Shortest Distance between Skew Lines", "Equation of Planes"],
+        difficultyTrend: 'medium',
+        masteryLevel: 75,
+        totalPracticed: 18,
+        totalCorrect: 13,
+      },
+      {
+        id: 'top_prob',
+        subjectId: 'sub_math_12',
+        name: 'Probability & Distributions',
+        description: 'Conditional probability, multiplication theorem, Bayes’ theorem, and binomial distribution.',
+        estimatedWeightagePercentage: 16,
+        subtopics: ["Conditional Probability", "Bayes' Theorem", "Independent Events"],
+        difficultyTrend: 'medium',
+        masteryLevel: 70,
+        totalPracticed: 15,
+        totalCorrect: 10,
+      },
+    ],
+  },
+];
+
+export const SAMPLE_QUESTIONS: Question[] = [
+  {
+    id: 'q_phy_001',
+    subjectId: 'sub_physics_12',
+    topicId: 'top_elec_stat',
+    topicName: 'Electrostatics & Potential',
+    subtopic: 'Gauss Theorem',
+    type: 'mcq',
+    difficulty: 'easy',
+    bloomLevel: 'remember',
+    marks: 1,
+    text: 'A point charge +q is placed at the center of a cubical Gaussian surface of edge length L. What is the total electric flux emerging through only one face of the cube?',
+    options: [
+      'q / (6 * ε₀)',
+      'q / ε₀',
+      'q / (4π * ε₀ * L²)',
+      '6q / ε₀'
+    ],
+    correctAnswer: 'q / (6 * ε₀)',
+    explanation: 'According to Gauss’s law, total flux through the closed surface enclosing charge q is Φ_total = q / ε₀. Since a cube has 6 identical symmetrical faces, the flux through any single face is exactly 1/6th of total flux: Φ_face = q / (6ε₀).',
+    pastPaperSource: 'CBSE 2023 (Delhi Set 1)',
+    hints: ['Remember that a cube has 6 symmetrical identical square faces.', 'Apply Gauss’s Law for total enclosed flux.'],
+  },
+  {
+    id: 'q_phy_002',
+    subjectId: 'sub_physics_12',
+    topicId: 'top_curr_elec',
+    topicName: 'Current Electricity & Circuits',
+    subtopic: 'Drift Velocity',
+    type: 'short_answer',
+    difficulty: 'medium',
+    bloomLevel: 'understand',
+    marks: 2,
+    text: 'Define drift velocity of free electrons in a metallic conductor. How does the drift velocity change when the potential difference applied across the ends of the conductor is doubled while keeping its temperature and length constant?',
+    referenceAnswer: 'Drift velocity (v_d) is defined as the average velocity acquired by free electrons in a conductor in the opposite direction of an applied electric field.\n\nSince v_d = (e * E * τ) / m = (e * V * τ) / (m * L), drift velocity is directly proportional to the applied potential difference V (when L and temperature τ remain constant).\nTherefore, when potential difference V is doubled, the drift velocity is also doubled.',
+    explanation: 'Key points required: 1. Definition mentioning average velocity in opposite direction of electric field. 2. Formula showing v_d ∝ V. 3. Explicit conclusion that v_d doubles.',
+    pastPaperSource: 'CBSE 2022 Term-2 Board Paper',
+    rubric: [
+      {
+        id: 'r_phy_002_1',
+        criterion: 'Definition of Drift Velocity',
+        maxPoints: 1,
+        description: 'States average velocity attained by electrons in presence of external electric field.'
+      },
+      {
+        id: 'r_phy_002_2',
+        criterion: 'Effect of Doubling Potential Difference',
+        maxPoints: 1,
+        description: 'Derives v_d ∝ V and correctly concludes drift velocity doubles.'
+      }
+    ],
+    hints: ['Relate electric field E to potential difference V / L.', 'Check the dependence of relaxation time on temperature.']
+  },
+  {
+    id: 'q_phy_003',
+    subjectId: 'sub_physics_12',
+    topicId: 'top_mag_eff',
+    topicName: 'Magnetic Effects of Current & Magnetism',
+    subtopic: 'Ampere’s Law',
+    type: 'numerical',
+    difficulty: 'medium',
+    bloomLevel: 'apply',
+    marks: 3,
+    text: 'A long straight wire carries a steady electric current of 5.0 A. Calculate the magnitude of the magnetic field B at a perpendicular distance of 4.0 cm from the axis of the wire. (Use μ₀ = 4π × 10⁻⁷ T·m/A; round your answer in microteslas, µT).',
+    correctAnswer: '25',
+    tolerance: 0.5,
+    unit: 'µT',
+    formulaReference: 'B = (μ₀ * I) / (2π * r)',
+    explanation: 'Using Ampere’s Law / Biot-Savart Law for an infinite straight wire:\nB = (μ₀ * I) / (2 * π * r)\nB = (4π × 10⁻⁷ * 5.0) / (2π * 0.04)\nB = (2 × 10⁻⁷ * 5.0) / 0.04 = 10 × 10⁻⁷ / 0.04 = 2.5 × 10⁻⁵ Tesla = 25 µT.',
+    pastPaperSource: 'CBSE 2021 Question Bank',
+    hints: ['Convert distance 4 cm into meters (0.04 m).', 'Recall the formula for magnetic field of a long straight conductor: (μ₀ * I) / (2π * r).']
+  },
+  {
+    id: 'q_phy_004',
+    subjectId: 'sub_physics_12',
+    topicId: 'top_emi_ac',
+    topicName: 'Electromagnetic Induction & Alternating Currents',
+    subtopic: 'LCR Series Resonance',
+    type: 'long_answer',
+    difficulty: 'hard',
+    bloomLevel: 'analyze',
+    marks: 5,
+    text: 'A series LCR circuit with L = 0.12 H, C = 480 nF, and R = 23 Ω is connected to a 230 V variable frequency AC supply.\n(a) Explain the condition of electrical resonance in this circuit and derive the expression for resonant frequency ω_r.\n(b) Calculate the resonant angular frequency ω_r.\n(c) What is the average power transferred to the circuit in one complete cycle at resonance?',
+    referenceAnswer: '(a) Condition for resonance: Electrical resonance occurs when inductive reactance equals capacitive reactance, i.e., X_L = X_C, so ωL = 1 / (ωC). This gives the resonant angular frequency: ω_r = 1 / √(L * C).\nAt this frequency, impedance Z = √[R² + (X_L - X_C)²] = R (minimum), and current reaches its maximum amplitude.\n\n(b) Calculation:\nL = 0.12 H, C = 480 × 10⁻⁹ F\nL * C = 0.12 * 4.8 × 10⁻⁷ = 5.76 × 10⁻⁸\n√(L * C) = 2.4 × 10⁻⁴\nω_r = 1 / (2.4 × 10⁻⁴) = 10,000 / 2.4 = 4166.7 rad/s (approx 4167 rad/s).\n\n(c) Power at resonance:\nAt resonance, power factor cos(Φ) = R / Z = R / R = 1.\nCurrent I_rms = V_rms / R = 230 / 23 = 10 A.\nAverage power P_avg = V_rms * I_rms * cos(Φ) = 230 * 10 * 1 = 2300 W (2.3 kW).',
+    explanation: 'Resonance marks the state where impedance is purely resistive. Full marks require clear derivation of ω_r, correct numerical substitution with units, and formula P = V²/R or V*I*cosφ at resonance.',
+    pastPaperSource: 'CBSE 2024 Sample Paper',
+    rubric: [
+      {
+        id: 'r_phy_004_1',
+        criterion: 'Resonance Condition & Derivation of ω_r',
+        maxPoints: 2,
+        description: 'States X_L = X_C and clearly shows ω_r = 1/√(LC), mentioning minimum impedance Z=R.'
+      },
+      {
+        id: 'r_phy_004_2',
+        criterion: 'Numerical Calculation of ω_r',
+        maxPoints: 1.5,
+        description: 'Accurately computes ω_r ≈ 4167 rad/s with appropriate units.'
+      },
+      {
+        id: 'r_phy_004_3',
+        criterion: 'Power at Resonance Calculation',
+        maxPoints: 1.5,
+        description: 'Applies P = V_rms * I_rms with cos Φ = 1 to obtain 2300 W.'
+      }
+    ],
+    hints: ['Set XL = XC to find the condition for resonance.', 'At resonance, impedance Z is equal to resistance R.']
+  },
+  {
+    id: 'q_phy_005',
+    subjectId: 'sub_physics_12',
+    topicId: 'top_optics',
+    topicName: 'Optics (Ray & Wave Optics)',
+    subtopic: 'Refraction via Prism',
+    type: 'mcq',
+    difficulty: 'medium',
+    bloomLevel: 'apply',
+    marks: 1,
+    text: 'A ray of monochromatic light passes through an equilateral glass prism (refracting angle A = 60°) at the position of minimum deviation. If the refractive index of glass is √3, what is the angle of minimum deviation (D_m)?',
+    options: [
+      '30°',
+      '45°',
+      '60°',
+      '90°'
+    ],
+    correctAnswer: '60°',
+    explanation: 'From the prism formula: μ = sin[(A + D_m)/2] / sin(A/2)\nHere A = 60°, so A/2 = 30°, and sin(30°) = 1/2.\n√3 = sin[(60° + D_m)/2] / 0.5\n⇒ sin[(60° + D_m)/2] = (√3)/2 = sin(60°)\n⇒ (60° + D_m) / 2 = 60°\n⇒ 60° + D_m = 120°\n⇒ D_m = 60°.',
+    pastPaperSource: 'CBSE 2020 Board Paper',
+    hints: ['Use the formula μ = sin((A + Dm)/2) / sin(A/2).', 'Equilateral prism has angle A = 60°.']
+  },
+  {
+    id: 'q_phy_006',
+    subjectId: 'sub_physics_12',
+    topicId: 'top_modern_phy',
+    topicName: 'Modern Physics & Semiconductors',
+    subtopic: 'Einstein Photoelectric Equation',
+    type: 'short_answer',
+    difficulty: 'easy',
+    bloomLevel: 'understand',
+    marks: 2,
+    text: 'State two experimental observations of the photoelectric effect that could not be explained by the classical wave theory of light.',
+    referenceAnswer: 'Two classical contradictions explained by Einstein’s quantum theory:\n1. Existence of a threshold frequency (ν₀) below which no photoelectron emission occurs regardless of light intensity.\n2. Instantaneous emission of photoelectrons (within ~10⁻⁹ seconds) without the time lag predicted by wave theory.\n(Alternative valid observation: Maximum kinetic energy depends strictly on light frequency, not light intensity).',
+    explanation: 'Classical wave theory expected energy to accumulate over time and higher intensity to yield higher kinetic energy electrons. Experiments demonstrated instantaneous ejection and threshold frequency.',
+    pastPaperSource: 'CBSE 2023 Board Paper',
+    rubric: [
+      {
+        id: 'r_phy_006_1',
+        criterion: 'Threshold Frequency / Cut-off',
+        maxPoints: 1,
+        description: 'Mentions threshold frequency below which no emission occurs.'
+      },
+      {
+        id: 'r_phy_006_2',
+        criterion: 'Instantaneous Emission / Kinetic Energy Dependence',
+        maxPoints: 1,
+        description: 'Mentions instantaneous emission with no time lag, or K_max dependence on frequency.'
+      }
+    ],
+    hints: ['Think about light intensity vs light frequency.', 'Consider time delay in energy accumulation.']
+  },
+  {
+    id: 'q_phy_007',
+    subjectId: 'sub_physics_12',
+    topicId: 'top_elec_stat',
+    topicName: 'Electrostatics & Potential',
+    subtopic: 'Parallel Plate Capacitors',
+    type: 'numerical',
+    difficulty: 'hard',
+    bloomLevel: 'apply',
+    marks: 3,
+    text: 'A parallel plate capacitor has plate area 100 cm² and separation 2.0 mm. It is charged to a potential difference of 200 V and then disconnected from the supply battery. A dielectric slab of dielectric constant K = 5 is then inserted to completely fill the space between the plates. Calculate the new potential difference across the capacitor in volts (V).',
+    correctAnswer: '40',
+    tolerance: 0.1,
+    unit: 'V',
+    formulaReference: 'V_new = V_old / K (when battery is disconnected)',
+    explanation: 'Since the capacitor is disconnected from the battery before insertion of the dielectric slab, the stored charge Q remains constant: Q = C_old * V_old.\nThe new capacitance becomes C_new = K * C_old.\nTherefore, the new potential difference across the plates is:\nV_new = Q / C_new = (C_old * V_old) / (K * C_old) = V_old / K.\nSubstituting values: V_new = 200 V / 5 = 40 V.',
+    pastPaperSource: 'CBSE 2022 All India Paper',
+    hints: ['Does charge change or remain constant when the battery is disconnected?', 'Recall C increases by factor of K.']
+  },
+  {
+    id: 'q_phy_008',
+    subjectId: 'sub_physics_12',
+    topicId: 'top_optics',
+    topicName: 'Optics (Ray & Wave Optics)',
+    subtopic: 'YDSE Interference',
+    type: 'mcq',
+    difficulty: 'medium',
+    bloomLevel: 'understand',
+    marks: 1,
+    text: 'In Young’s double slit experiment, if the entire apparatus is immersed in water (refractive index = 4/3), how does the fringe width β change?',
+    options: [
+      'It increases by 33%',
+      'It decreases to 3/4 of its original value in air',
+      'It remains unchanged',
+      'It doubles'
+    ],
+    correctAnswer: 'It decreases to 3/4 of its original value in air',
+    explanation: 'Fringe width is given by β = (λ * D) / d. When immersed in a medium of refractive index μ, the wavelength of light decreases to λ’ = λ / μ = λ / (4/3) = (3/4)λ. Since D and d remain constant, the fringe width becomes β’ = β / μ = 0.75β.',
+    pastPaperSource: 'CBSE 2023 Compartment Exam',
+    hints: ['Fringe width is directly proportional to wavelength λ.', 'Wavelength in medium = λ_air / refractive_index.']
+  }
+];
+
+export const SAMPLE_PAST_PAPERS: PastPaper[] = [
+  {
+    id: 'pp_phy_2024',
+    subjectId: 'sub_physics_12',
+    title: 'CBSE Class 12 Physics Official Board Paper (Set 1)',
+    year: 2024,
+    examBoard: 'CBSE',
+    totalMarks: 70,
+    durationMinutes: 180,
+    fileName: 'Physics_Board_Exam_2024_Delhi_Set1.pdf',
+    fileSize: '2.4 MB',
+    uploadDate: '2026-10-18',
+    extractedQuestionsCount: 33,
+    status: 'processed'
+  },
+  {
+    id: 'pp_phy_2023',
+    subjectId: 'sub_physics_12',
+    title: 'All India Senior School Certificate Examination (Physics)',
+    year: 2023,
+    examBoard: 'CBSE',
+    totalMarks: 70,
+    durationMinutes: 180,
+    fileName: 'CBSE_Physics_2023_All_India.pdf',
+    fileSize: '1.9 MB',
+    uploadDate: '2026-10-22',
+    extractedQuestionsCount: 35,
+    status: 'processed'
+  },
+  {
+    id: 'pp_phy_sample_2025',
+    subjectId: 'sub_physics_12',
+    title: 'Model Sample Question Paper & Official Marking Scheme',
+    year: 2025,
+    examBoard: 'CBSE Academic',
+    totalMarks: 70,
+    durationMinutes: 180,
+    fileName: 'SQP_Physics_Class_XII_2024-25.pdf',
+    fileSize: '3.1 MB',
+    uploadDate: '2026-11-01',
+    extractedQuestionsCount: 33,
+    status: 'processed'
+  }
+];
+
+export const INITIAL_STUDY_PLAN: StudyPlanSession[] = [
+  {
+    id: 'sp_001',
+    date: new Date().toISOString().split('T')[0], // Today
+    title: 'Mastering Ampere’s Law & Magnetic Dipole Moment',
+    topicIds: ['top_mag_eff'],
+    topicNames: ['Magnetic Effects of Current & Magnetism'],
+    durationMinutes: 45,
+    type: 'weakness_boost',
+    isCompleted: false,
+    notes: 'Agent recommended: Focus on high-weightage magnetic field derivations and converting galvanometers.'
+  },
+  {
+    id: 'sp_002',
+    date: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // Tomorrow
+    title: 'LCR Circuits Resonance & Power Factor Practice',
+    topicIds: ['top_emi_ac'],
+    topicNames: ['Electromagnetic Induction & Alternating Currents'],
+    durationMinutes: 50,
+    type: 'topic_practice',
+    isCompleted: false,
+    notes: 'Work on 5 numerical questions and 2 long answer derivations.'
+  },
+  {
+    id: 'sp_003',
+    date: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    title: 'Ray Optics & Lens Maker Formula Deep Dive',
+    topicIds: ['top_optics'],
+    topicNames: ['Optics (Ray & Wave Optics)'],
+    durationMinutes: 60,
+    type: 'concept_review',
+    isCompleted: false,
+    notes: 'Review astronomical telescope diagram and sign conventions.'
+  },
+  {
+    id: 'sp_004',
+    date: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    title: 'Full Section-A & B Timed Mock Test',
+    topicIds: ['top_elec_stat', 'top_curr_elec', 'top_mag_eff', 'top_emi_ac', 'top_optics', 'top_modern_phy'],
+    topicNames: ['Full Syllabus Coverage'],
+    durationMinutes: 60,
+    type: 'mock_exam',
+    isCompleted: false,
+    notes: 'First timed benchmark session: 15 questions, 60 minutes limit.'
+  },
+  {
+    id: 'sp_005',
+    date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    title: 'Modern Physics & Photoelectric Equation Drill',
+    topicIds: ['top_modern_phy'],
+    topicNames: ['Modern Physics & Semiconductors'],
+    durationMinutes: 40,
+    type: 'topic_practice',
+    isCompleted: false,
+    notes: 'Quick score-booster review: Bohr model spectral lines & diode rectifiers.'
+  }
+];
